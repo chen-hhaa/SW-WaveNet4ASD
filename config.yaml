@@ -1,0 +1,56 @@
+# dir / file
+model_dir: ./model_param
+result_dir: ./result
+result_file: result.csv
+data_dir: /home/hhchen/Pycharm/STgram_MFN/data/dataset
+pre_data_dir: ./data/pre_data
+process_machines:
+  - pump
+  - slider
+  - fan
+  - valve
+  - ToyCar
+  - ToyConveyor
+
+# p_AUC
+max_fpr: 0.1
+
+# feature
+sr: 16000
+n_mels: 128 # 128
+frames: 313
+skip_frames: 1
+n_fft: 1024
+hop_length: 512
+win_length: 1024
+power: 2.0
+
+# train
+epochs: 300
+batch_size: 64
+workers: 16
+lr: 1e-4
+cuda: True
+device_ids:
+  - 0
+save_every_n_epochs: 50
+early_stop: 50
+
+num_class: 41
+
+
+
+# loss
+lamda: 0
+margin: 0.7
+scale: 30
+
+
+ID_factor: {
+       fan: 0,
+       pump: 1,
+       slider: 2,
+       valve: 3,
+       ToyCar: 4,
+       ToyConveyor: 5,
+}
