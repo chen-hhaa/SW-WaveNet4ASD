@@ -17,47 +17,6 @@ from itertools import chain
 from dataset_v2 import Generator
 
 
-def visual(input_img, output_img, machine_type, machine_id, title=None):
-    # input_img = input_img.cpu().numpy()
-    # output_img = output_img.cpu().numpy()
-    # plt.figure()
-    plt.subplot(2, 1, 1)
-    plt.imshow(input_img)
-    plt.ylabel('Mel Frequency')
-    plt.xlabel('Frames')
-    plt.title('input image')
-    # plt.colorbar(format='%+2.0f dB')
-
-    plt.subplot(2, 1, 2)
-    plt.imshow(output_img)
-    plt.ylabel('Mel Frequency')
-    plt.xlabel('Frames')
-    plt.title('output image')
-    # plt.colorbar(format='%+2.0f dB')
-
-    if title is not None:
-        plt.suptitle(f'{title} {machine_type}({machine_id})')
-    plt.show()
-
-
-def show_result(model, ckpt_pth, test_loader, device, machine_type, machine_id):
-    model.load_state_dict(torch.load(ckpt_pth), strict=True)
-    y_pred = []
-    y_true = []
-    for mel, labels, _ in test_loader:
-        with torch.no_grad():
-            input = mel.to(device)
-            output = model(input)
-            if labels.item() == 0:
-                type = 'normal'
-            else:
-                type = 'anomaly'
-        visual(input.squeeze(0).squeeze(0).cpu().numpy(), output.squeeze(0).squeeze(0).cpu().numpy(),
-               machine_type,
-               machine_id,
-               title=type)
-
-
 def save_csv(save_file_path,
              save_data):
     with open(save_file_path, 'w', newline='') as f:
@@ -159,7 +118,7 @@ def path_to_dict(process_machines,
             print(f'{data_type} {machine_type} {id_str} were split to {len(files)} wav files!')
     #  chain.from_iterable()将嵌套列表合并成一个
     path_list = list(chain.from_iterable(path_list))
-    os.makedirs(os.path.split(root_folder)[0])
+    os.makedirs(os.path.split(root_folder)[0], exist_ok=True)
     with open(root_folder, 'wb') as f:
         joblib.dump(path_list, f)
 
