@@ -109,13 +109,13 @@ class DilatedStack(nn.Module):
         return torch.cat(skips, dim=0), x  # [layers,batch,skip_size,seq_len]
 
 
-class WaveNet(nn.Module):
+class SpecWaveNet(nn.Module):
     def __init__(self, input_size=128, out_size=128, residual_size=512, skip_size=512,
                  dilation_cycles=2, dilation_depth=4, num_classes=41):
 
-        super(WaveNet, self).__init__()
+        super(SpecWaveNet, self).__init__()
 
-        self.tgramnet = Tgram_WaveNet()
+        self.tgramnet = WavegramWaveNet()
         # self.conv_extrctor = nn.Conv1d(1, input_size, 1024, 512, 1024 // 2, bias=False)
         self.input_conv = CausalConv1d(input_size, residual_size, kernel_size=2)
         self.dilated_stacks = nn.ModuleList(
@@ -173,11 +173,11 @@ class WaveNet(nn.Module):
         return out, feature
 
 
-class Tgram_WaveNet(nn.Module):
+class WavegramWaveNet(nn.Module):
     def __init__(self, input_size=128, out_size=128, residual_size=512, skip_size=512,
                  dilation_cycles=2, dilation_depth=4, num_classes=41):
 
-        super(Tgram_WaveNet, self).__init__()
+        super(WavegramWaveNet, self).__init__()
         self.conv_extrctor = nn.Conv1d(1, input_size, 1024, 512, 1024 // 2, bias=False)
         self.input_conv = CausalConv1d(input_size, residual_size, kernel_size=2)
         self.dilated_stacks = nn.ModuleList(
