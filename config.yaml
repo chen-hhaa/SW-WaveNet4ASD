@@ -2,7 +2,7 @@
 model_dir: ./model_param
 result_dir: ./result
 result_file: result.csv
-data_dir: /home/hhchen/Pycharm/STgram_MFN/data/dataset
+data_dir: /data/dataset
 pre_data_dir: ./data/pre_data
 process_machines:
   - pump
