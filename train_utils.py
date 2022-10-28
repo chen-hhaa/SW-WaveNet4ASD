@@ -218,7 +218,7 @@ def generate_result(args, model, save=True):
 
 #  该函数的作用是将所有训练音频文件的路径列表存入.db文件中，可以提高文件路径检索速度
 def preprocess(args):
-    root_folder = os.path.join(args.pre_data_dir, f'313frames_train_path_list.db')
+    root_folder = os.path.join(args.pre_data_dir, f'dataset_train_path_list.db')
     if not os.path.exists(root_folder):
         utils.path_to_dict(process_machines=args.process_machines,
                            data_dir=args.data_dir,
