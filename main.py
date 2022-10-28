@@ -27,7 +27,6 @@ with open(config_path) as f:
 
 parser = argparse.ArgumentParser(description='ASD')
 parser.add_argument('--data-dir', default=param['data_dir'], type=str, help='data dir')
-parser.add_argument('--data_path', type=str, default='/home/hhchen/Pycharm/STgram_MFN/data/dataset')
 parser.add_argument('--machine_type', type=str, default='all')
 parser.add_argument('--machine_id', type=str, default='all')
 parser.add_argument('--result-dir', default=param['result_dir'], type=str, help='result saved dir')
