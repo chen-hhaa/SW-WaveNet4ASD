@@ -11,7 +11,7 @@ from torch.utils.data import DataLoader
 from dataset import WaveSpecIDDataset
 from dataset_v2 import Wav_Mel_ID_Dataset
 from train_utils import generate_result, train, preprocess, eval, eval_v2, test
-from wavenet import WaveNet, Tgram_WaveNet
+from wavenet import SpecWaveNet, WavegramWaveNet
 
 
 if torch.cuda.is_available():
@@ -47,7 +47,8 @@ parser.add_argument('--power', default=param['power'], type=float, help='STFT pa
 
 parser.add_argument('--num_classes', type=int, default=41)
 parser.add_argument('--load_pretrained', type=bool, default=False)
-parser.add_argument('--pretrained_ckpt_path', type=str, default='./ckpt/all_WaveNet_STgram(add_fc_m=0.5).pth')
+parser.add_argument('--pretrained_ckpt_path', type=str, default='./ckpt/all_WaveNet_SW.pth')
+parser.add_argument('--model_dir', type=str, default=param['model_dir'])
 parser.add_argument('--epochs', type=int, default=200, help='maximum training epochs')
 parser.add_argument('--early_stop', type=int, default=50, help='early stop epochs')
 
@@ -56,7 +57,7 @@ parser.add_argument('--lr', type=float, default=param['lr'], help='learning rate
 parser.add_argument('--momentum', type=float, default=0.9, help='momentum of SGD')
 parser.add_argument('--seed', type=int, default=666, help='manual seed')
 
-parser.add_argument('--version', default='WaveNet_STgram(10.17)', type=str, help='trail version')
+parser.add_argument('--version', default='WaveNet_SW(10.17)', type=str, help='trail version')
 args = parser.parse_args()
 
 
@@ -70,7 +71,7 @@ def run(args):
 
     # load dataset
     print(f'Loading Dataset---type:{args.machine_type}   id:{args.machine_id}')
-    root_folder = os.path.join(args.pre_data_dir, f'313frames_train_path_list.db')
+    root_folder = os.path.join(args.pre_data_dir, f'dataset_train_path_list.db')
     train_clf_dataset = WaveSpecIDDataset(root_folder=root_folder,
                                           sr=args.sr,
                                           ID_factor=param['ID_factor'],
@@ -83,7 +84,7 @@ def run(args):
     train_loader = torch.utils.data.DataLoader(train_clf_dataset, batch_size=args.batch_size, shuffle=True,
                               num_workers=16, pin_memory=True, drop_last=True)
 
-    model = Tgram_WaveNet()
+    model = SpecWaveNet()
     optimizer = optim.Adam(model.parameters(), lr=args.lr)
     # optimizer = optim.Adam(model.parameters(), lr=args.lr * 0.1)
 
@@ -114,7 +115,7 @@ def run(args):
                 early_stop_counter = 0
                 best_auc = auc
                 best_pauc = p_auc
-                torch.save(model.state_dict(), f'./ckpt/{args.machine_type}_{args.version}.pth')
+                torch.save(model.state_dict(), f'./{args.model_dir}/{args.machine_type}_{args.version}.pth')
             print(f'Sample Auroc:{auc:.3f} p_auc:{p_auc:.3f}   Best Auc:{best_auc:.4f}')
             # os.makedirs(ckp_folder, exist_ok=True)
             # torch.save(decoder.state_dict(), ckp_path)
