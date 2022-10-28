@@ -151,6 +151,7 @@ def test(model, type_list, id_list, args):
 
 
 # 生成csv文件
+# This part of the code reference from https://github.com/liuyoude/STgram-MFN
 def generate_result(args, model, save=True):
     classifier = model
 
