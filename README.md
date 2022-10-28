@@ -33,7 +33,7 @@ data
 │       ├── test
 │       └── train
 └── pre_data
-    └── 313frames_train_path_list.db  # Automatically generated file
+    └── dataset_train_path_list.db  # Automatically generated file
 ```
 
  ### Cite
