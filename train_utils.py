@@ -78,7 +78,7 @@ def eval_v2(model, args):
     #
     # sum_auc_r, sum_pauc_r = 0, 0
 
-    dirs = utils.select_dirs(args.data_path, data_type='')
+    dirs = utils.select_dirs(args.data_dir, data_type='')
     print('\n' + '=' * 20)
     for index, target_dir in enumerate(sorted(dirs)):
         start = time.perf_counter()
@@ -131,7 +131,7 @@ def test(model, type_list, id_list, args):
         Auc_list = []
         pAuc_list = []
         for id in id_list:
-            test_dataset = Wav_Mel_ID_Dataset(root_floder=args.data_path,
+            test_dataset = Wav_Mel_ID_Dataset(root_floder=args.data_dir,
                                               machine_type=type,
                                               machine_id=id,
                                               phase='test')
@@ -161,7 +161,7 @@ def generate_result(args, model, save=True):
         csv_lines = []
 
     sum_auc, sum_pauc, num = 0, 0, 0
-    dirs = utils.select_dirs(args.data_path, data_type='')
+    dirs = utils.select_dirs(args.data_dir, data_type='')
     result_dir = os.path.join(args.result_dir, args.version)
     os.makedirs(result_dir, exist_ok=True)
     print('\n' + '=' * 20)
